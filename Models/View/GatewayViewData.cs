@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace GatewaysManager.Models.View
@@ -6,7 +7,7 @@ namespace GatewaysManager.Models.View
     public class GatewayViewData : GatewayInputData
     {
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         [JsonProperty("peripherals")]
         public List<PeripheralViewData> Peripherals { get; set; }

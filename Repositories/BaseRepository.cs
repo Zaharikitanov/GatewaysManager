@@ -43,7 +43,7 @@ namespace GatewaysManager.Repositories
             return entity;
         }
 
-        public virtual async Task<T> Update<T>(T entity) where T : Entity
+        public virtual async Task<T> UpdateAsync<T>(T entity) where T : Entity
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();

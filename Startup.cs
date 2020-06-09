@@ -5,6 +5,8 @@ using GatewaysManager.Mappers;
 using GatewaysManager.Mappers.Interfaces;
 using GatewaysManager.Repositories;
 using GatewaysManager.Repositories.Interfaces;
+using GatewaysManager.Services;
+using GatewaysManager.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -60,7 +62,7 @@ namespace GatewaysManager
 
         private static void RegisterBusinessLogicServices(IServiceCollection services)
         {
-            
+            services.AddTransient<IPeripheralService, PeripheralService>(); 
         }
 
         private static void RegisterRepositories(IServiceCollection services)
@@ -71,12 +73,14 @@ namespace GatewaysManager
         private static void RegisterFactories(IServiceCollection services)
         {
             services.AddTransient<IPeripheralFactory, PeripheralFactory>();
+            services.AddTransient<IGatewayFactory, GatewayFactory>();
             services.AddTransient<IStatusCodeResultFactory, StatusCodeResultFactory>();
         }
 
         private static void RegisterDataMappers(IServiceCollection services)
         {
             services.AddTransient<IPeripheralDataMapper, PeripheralDataMapper>(); 
+            services.AddTransient<IGatewayDataMapper, GatewayDataMapper>(); 
         }
     }
 }

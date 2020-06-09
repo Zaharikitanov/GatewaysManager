@@ -9,5 +9,6 @@ namespace GatewaysManager.Repositories.Interfaces
     {
         Task<List<PeripheralViewData>> GetEntitiesListAsync();
         Task<PeripheralViewData> GetEntityDetailsAsync(Guid entityId);
+        Task<int> GetChildrenAssignedToParentAsync(Guid entityId);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace GatewaysManager.Models.Database
+﻿using System;
+
+namespace GatewaysManager.Models.Database
 {
     public class Peripheral : Entity
     {
@@ -8,7 +10,7 @@
 
         public string DateCreated { get; set; }
 
-        public string GatewayId { get; set; }
+        public Guid GatewayId { get; set; }
 
         public Gateway Gateway { get; set; }
 

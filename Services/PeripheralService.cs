@@ -1,18 +1,17 @@
-﻿using FluentValidation.Results;
-using GatewaysManager.Factories.Interfaces;
+﻿using GatewaysManager.Factories.Interfaces;
+using GatewaysManager.Models;
 using GatewaysManager.Models.Database;
-using GatewaysManager.Models.Outcomes;
 using GatewaysManager.Models.View;
 using GatewaysManager.Repositories.Interfaces;
+using GatewaysManager.Services.Interfaces;
 using GatewaysManager.Validators;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GatewaysManager.Services
 {
-    public class PeripheralService
+    public class PeripheralService : IPeripheralService
     {
         private IPeripheralRepository _repository;
         private IPeripheralFactory _factory;
@@ -23,61 +22,73 @@ namespace GatewaysManager.Services
             _factory = factory;
         }
 
-        public async Task<CreateEntityOutcome> CreateEntityAsync(PeripheralInputData viewData)
+        public async Task<EntityActionOutcome> CreateEntityAsync(PeripheralInputData viewData)
         {
             var newEntity = _factory.Create(viewData);
-
-            PeripheralDataInputValidator validator = new PeripheralDataInputValidator();
-
-            ValidationResult result = validator.Validate(viewData);
+            var assignedChildrenAmount = await _repository.GetChildrenAssignedToParentAsync(viewData.GatewayId);
+            var validator = new PeripheralDataInputValidator();
+            var result = validator.Validate(viewData);
 
             if (result.IsValid == false)
-            {
-                return CreateEntityOutcome.MissingFullEntityData;
-            }
+                return EntityActionOutcome.MissingFullEntityData;
+
+            if (viewData.GatewayId != null && assignedChildrenAmount > 10)
+                return EntityActionOutcome.PeripheralsLimitReached;
 
             var upsertSuccessful = await _repository.AddAsync(newEntity);
             if (upsertSuccessful == null)
-            {
-                return CreateEntityOutcome.CreateFailed;
-            }
+                return EntityActionOutcome.CreateFailed;
 
-            return CreateEntityOutcome.Success;
+            return EntityActionOutcome.Success;
         }
 
-        public async Task<UpdateEntityOutcome> UpdateEntityAsync(PeripheralInputData viewData, Guid id)
+        public async Task<EntityActionOutcome> UpdateEntityAsync(PeripheralInputData viewData, Guid id)
         {
-            var getCurrent = await _repository.GetByIdAsync<Peripheral>(id);
-
-            getCurrent.UID = viewData.UID ?? getCurrent.UID;
-            getCurrent.URL = viewData.URL ?? getCurrent.URL;
-            getCurrent.Category = viewData.Category != getCurrent.Category ? viewData.Category : getCurrent.Category;
-            getCurrent.HomepageSnapshot = viewData.HomepageSnapshot ?? getCurrent.HomepageSnapshot;
-            getCurrent.Email = viewData.LoginDetails.Email ?? getCurrent.Email;
-            getCurrent.Password = viewData.LoginDetails.Password ?? getCurrent.Password;
-
-            PeripheralDataInputValidator validator = new PeripheralDataInputValidator();
-
-            ValidationResult result = validator.Validate(viewData);
+            var assignedChildrenAmount = await _repository.GetChildrenAssignedToParentAsync(viewData.GatewayId);
+            var validator = new PeripheralDataInputValidator();
+            var result = validator.Validate(viewData);
 
             if (result.IsValid == false)
-            {
-                return UpdateEntityOutcome.UpdateFailed;
-            }
+                return EntityActionOutcome.UpdateFailed;
 
-            var updateSuccessful = _repository.Update(getCurrent);
+            if (viewData.GatewayId != null && assignedChildrenAmount > 10)
+                return EntityActionOutcome.PeripheralsLimitReached;
+
+            var updateSuccessful = await _repository.UpdateAsync(
+                await PopulateEntityDataWithViewData(viewData, id));
+
             if (updateSuccessful == null)
-            {
-                return UpdateEntityOutcome.EntityNotFound;
-            }
+                return EntityActionOutcome.EntityNotFound;
 
-            return UpdateEntityOutcome.Success;
+            return EntityActionOutcome.Success;
         }
 
         public async Task<PeripheralViewData> GetEntityByIdAsync(Guid entityId)
         {
             return await _repository.GetEntityDetailsAsync(entityId);
         }
-        
+
+        public async Task<List<PeripheralViewData>> GetAllEntitiesAsync()
+        {
+            return await _repository.GetEntitiesListAsync();
+        }
+
+        public async Task<Peripheral> DeleteAsync(Guid id)
+        {
+            var getEntity = await _repository.GetByIdAsync<Peripheral>(id);
+            return await _repository.DeleteAsync(getEntity);
+        }
+
+        private async Task<Peripheral> PopulateEntityDataWithViewData(PeripheralInputData viewData, Guid entityId)
+        {
+            var getCurrent = await _repository.GetByIdAsync<Peripheral>(entityId);
+
+            getCurrent.UID = viewData?.UID ?? getCurrent.UID;
+            getCurrent.GatewayId = viewData?.GatewayId ?? getCurrent.GatewayId;
+            getCurrent.Vendor = viewData.Vendor ?? getCurrent.Vendor;
+            getCurrent.Status = viewData?.Status ?? getCurrent.Status;
+
+            return getCurrent;
+        }
     }
 }

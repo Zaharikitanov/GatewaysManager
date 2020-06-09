@@ -30,10 +30,21 @@ namespace GatewaysManager.Repositories
 
         public async Task<PeripheralViewData> GetEntityDetailsAsync(Guid entityId)
         {
-            var entity = await _dbContext.Peripherals.Where(f => f.Id == entityId)
-                .Select(f => _mapper.MapToViewModel(f)).SingleOrDefaultAsync();
+            var entity = await _dbContext.Peripherals
+                .Where(f => f.Id == entityId)
+                .Select(f => _mapper.MapToViewModel(f))
+                .SingleOrDefaultAsync();
 
             return entity;
+        }
+
+        public async Task<int> GetChildrenAssignedToParentAsync(Guid entityId)
+        {
+            var childrenAmount = await _dbContext.Peripherals
+                .Where(p => p.GatewayId == entityId)
+                .CountAsync();
+
+            return childrenAmount;
         }
     }
 }

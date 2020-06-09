@@ -1,41 +1,30 @@
 ﻿using GatewaysManager.Factories.Interfaces;
-using GatewaysManager.Models.Outcomes;
+using GatewaysManager.Models;
 using System.Net;
 
 namespace GatewaysManager.Factories
 {
     public class StatusCodeResultFactory : IStatusCodeResultFactory
     {
-        public HttpStatusCode Create(CreateEntityOutcome createEntityOutcome)
+        public HttpStatusCode Create(EntityActionOutcome entityOutcome)
         {
-            switch (createEntityOutcome)
+            switch (entityOutcome)
             {
-                case CreateEntityOutcome.Success:
+                case EntityActionOutcome.Success:
                     return HttpStatusCode.OK;
 
-                case CreateEntityOutcome.CreateFailed:
+                case EntityActionOutcome.CreateFailed:
+                case EntityActionOutcome.UpdateFailed:
                     return HttpStatusCode.Conflict;
 
-                case CreateEntityOutcome.MissingFullEntityData:
+                case EntityActionOutcome.MissingFullEntityData:
                     return HttpStatusCode.UnprocessableEntity;
 
-                default:
-                    return HttpStatusCode.InternalServerError;
-            }
-        }
+                case EntityActionOutcome.PeripheralsLimitReached:
+                    return HttpStatusCode.NotAcceptable;
 
-        public HttpStatusCode Update(UpdateEntityOutcome updateEntityOutcome)
-        {
-            switch (updateEntityOutcome)
-            {
-                case UpdateEntityOutcome.Success:
-                    return HttpStatusCode.OK;
-
-                case UpdateEntityOutcome.UpdateFailed:
-                    return HttpStatusCode.UnprocessableEntity;
-
-                case UpdateEntityOutcome.EntityNotFound:
-                    return HttpStatusCode.Conflict;
+                case EntityActionOutcome.EntityNotFound:
+                    return HttpStatusCode.NotFound;
 
                 default:
                     return HttpStatusCode.InternalServerError;

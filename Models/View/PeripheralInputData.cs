@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace GatewaysManager.Models.View
 {
@@ -11,7 +12,7 @@ namespace GatewaysManager.Models.View
         public string Vendor { get; set; }
 
         [JsonProperty("gatewayId")]
-        public string GatewayId { get; set; }
+        public Guid GatewayId { get; set; }
 
         [JsonProperty("status")]
         public DeviceStatus Status { get; set; }
