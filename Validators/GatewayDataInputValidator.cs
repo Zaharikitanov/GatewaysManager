@@ -11,7 +11,9 @@ namespace GatewaysManager.Validators
                 .NotEmpty()
                 .WithMessage("Required")
                 .NotNull()
-                .WithMessage("Required");
+                .WithMessage("Required")
+                .Matches(@"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
+                .WithMessage("Invalid IPv4 format.");
 
             RuleFor(gateway => gateway.Name)
                 .NotEmpty()

@@ -5,7 +5,7 @@ using GatewaysManager.Models.View;
 
 namespace GatewaysManager.Repositories.Interfaces
 {
-    public interface IGatewayRepository
+    public interface IGatewayRepository : IBaseRepository
     {
         Task<List<GatewayViewData>> GetEntitiesListAsync();
         Task<GatewayViewData> GetEntityDetailsAsync(Guid entityId);

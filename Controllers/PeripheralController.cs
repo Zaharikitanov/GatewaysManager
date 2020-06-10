@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace GatewaysManager.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class PeripheralController : ControllerBase
     {
         private IPeripheralService _service;

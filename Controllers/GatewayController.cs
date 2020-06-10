@@ -10,19 +10,21 @@ using System.Threading.Tasks;
 
 namespace GatewaysManager.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class GatewayController : ControllerBase
     {
-        private IPeripheralService _service;
+        private IGatewayService _service;
         private IStatusCodeResultFactory _resultFactory;
 
-        public GatewayController(IPeripheralService service, IStatusCodeResultFactory factory)
+        public GatewayController(IGatewayService service, IStatusCodeResultFactory factory)
         {
             _service = service;
             _resultFactory = factory;
         }
 
         [HttpPost]
-        public async Task<HttpStatusCode> Create(PeripheralInputData inputData)
+        public async Task<HttpStatusCode> Create(GatewayInputData inputData)
         {
             var createEntityOutcome = await _service.CreateEntityAsync(inputData);
 
@@ -30,19 +32,19 @@ namespace GatewaysManager.Controllers
         }
 
         [HttpGet]
-        public async Task<List<PeripheralViewData>> GetAllEntities()
+        public async Task<List<GatewayViewData>> GetAllEntities()
         {
             return await _service.GetAllEntitiesAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<PeripheralViewData> GetEntityById(Guid id)
+        public async Task<GatewayViewData> GetEntityById(Guid id)
         {
             return await _service.GetEntityByIdAsync(id);
         }
 
         [HttpPut("{id}")]
-        public async Task<HttpStatusCode> Update(PeripheralInputData inputData, Guid id)
+        public async Task<HttpStatusCode> Update(GatewayInputData inputData, Guid id)
         {
             var updateEntityOutcome = await _service.UpdateEntityAsync(inputData, id);
 
@@ -50,7 +52,7 @@ namespace GatewaysManager.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<Peripheral> Delete(Guid id)
+        public async Task<Gateway> Delete(Guid id)
         {
             return await _service.DeleteAsync(id);
         }

@@ -63,11 +63,13 @@ namespace GatewaysManager
         private static void RegisterBusinessLogicServices(IServiceCollection services)
         {
             services.AddTransient<IPeripheralService, PeripheralService>(); 
+            services.AddTransient<IGatewayService, GatewayService>(); 
         }
 
         private static void RegisterRepositories(IServiceCollection services)
         {
             services.AddTransient<IPeripheralRepository, PeripheralRepository>(); 
+            services.AddTransient<IGatewayRepository, GatewayRepository>(); 
         }
 
         private static void RegisterFactories(IServiceCollection services)
