@@ -18,17 +18,5 @@ namespace GatewaysManager.Mappers
 
             return mapper.Map<PeripheralViewData>(entity);
         }
-
-        public Peripheral MapToDataModel(PeripheralInputData entity)
-        {
-            var configuration = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<PeripheralInputData, Peripheral>();
-            });
-
-            var mapper = configuration.CreateMapper();
-
-            return mapper.Map<Peripheral>(entity);
-        }
     }
 }

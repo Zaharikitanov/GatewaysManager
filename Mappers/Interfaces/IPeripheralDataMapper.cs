@@ -5,7 +5,6 @@ namespace GatewaysManager.Mappers.Interfaces
 {
     public interface IPeripheralDataMapper
     {
-        Peripheral MapToDataModel(PeripheralInputData entity);
         PeripheralViewData MapToViewModel(Peripheral entity);
     }
 }

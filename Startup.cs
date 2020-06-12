@@ -81,8 +81,7 @@ namespace GatewaysManager
 
         private static void RegisterDataMappers(IServiceCollection services)
         {
-            services.AddTransient<IPeripheralDataMapper, PeripheralDataMapper>(); 
-            services.AddTransient<IGatewayDataMapper, GatewayDataMapper>(); 
+            services.AddTransient<IPeripheralDataMapper, PeripheralDataMapper>();
         }
     }
 }

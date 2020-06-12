@@ -15,6 +15,7 @@ namespace GatewaysManager.Services
     {
         private IPeripheralRepository _repository;
         private IPeripheralFactory _factory;
+        private int _assignedDevicesAmount = 10;
 
         public PeripheralService(IPeripheralRepository repository, IPeripheralFactory factory)
         {
@@ -32,7 +33,7 @@ namespace GatewaysManager.Services
             if (result.IsValid == false)
                 return EntityActionOutcome.MissingFullEntityData;
 
-            if (viewData.GatewayId != null && assignedChildrenAmount > 10)
+            if (viewData.GatewayId != null && assignedChildrenAmount >= _assignedDevicesAmount)
                 return EntityActionOutcome.PeripheralsLimitReached;
 
             var upsertSuccessful = await _repository.AddAsync(newEntity);
@@ -51,7 +52,7 @@ namespace GatewaysManager.Services
             if (result.IsValid == false)
                 return EntityActionOutcome.UpdateFailed;
 
-            if (viewData.GatewayId != null && assignedChildrenAmount > 10)
+            if (viewData.GatewayId != null && assignedChildrenAmount >= _assignedDevicesAmount)
                 return EntityActionOutcome.PeripheralsLimitReached;
 
             var updateSuccessful = await _repository.UpdateAsync(
