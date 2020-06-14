@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatewaysManager", "GatewaysManager.csproj", "{4735C709-EAFE-4E90-BB4B-2ED7573330BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewaysManager.UnitTests", "..\GatewaysManager.UnitTests\GatewaysManager.UnitTests.csproj", "{B4440D17-7DEB-41D2-A195-3436A44774B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatewaysManager.UnitTests", "..\GatewaysManager.UnitTests\GatewaysManager.UnitTests.csproj", "{B4440D17-7DEB-41D2-A195-3436A44774B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
