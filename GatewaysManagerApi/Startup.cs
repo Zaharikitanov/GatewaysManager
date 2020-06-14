@@ -36,6 +36,18 @@ namespace GatewaysManager
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Gateways Manager", Version = "v1" });
             });
 
+            //This is for Docker sql container image
+            //var server = Configuration["DBServer"] ?? "localhost";
+            //var port = Configuration["DBPort"] ?? "1433";
+            //var user = Configuration["DBUser"] ?? "SA";
+            //var password = Configuration["DBPassword"] ?? "Pa55w0rd2020";
+            //var database = Configuration["Database"] ?? "GatewaysManager";
+
+            //services.AddDbContext<GatewaysManagerContext>(options =>
+            //    options.UseSqlServer($"Server={server},{port}; Initial Catalog={database}; User ID={user}; Password={password}")
+            //);
+
+            //This is for localhost development
             services.AddDbContext<GatewaysManagerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             RegisterBusinessLogicServices(services);
@@ -58,6 +70,7 @@ namespace GatewaysManager
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Gateways Manager");
             });
+            PrepDB.PrepPopulation(app);
         }
 
         private static void RegisterBusinessLogicServices(IServiceCollection services)

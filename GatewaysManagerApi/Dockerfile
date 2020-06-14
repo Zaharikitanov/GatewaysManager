@@ -5,7 +5,7 @@ COPY *.csproj ./
 RUN dotnet restore
 
 COPY . ./
-RUN dotnet publish GatewaysManager.sln -c Release -o out
+RUN dotnet publish GatewaysManager.csproj -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
 WORKDIR /app
