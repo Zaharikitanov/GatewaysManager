@@ -37,7 +37,7 @@ Each peripheral device has:
    - update-database
    
  ## Docker automated build
- The docker compose file is located in GatewaysManagerApi folder.
+ The docker compose file is located in GatewaysManagerApi folder. <br>
  SQL settings details are located in the Startup.cs file located in the GatewaysManagerApi folder.
    
  ## Project Description
