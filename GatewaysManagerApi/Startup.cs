@@ -75,26 +75,26 @@ namespace GatewaysManager
 
         private static void RegisterBusinessLogicServices(IServiceCollection services)
         {
-            services.AddTransient<IPeripheralService, PeripheralService>(); 
-            services.AddTransient<IGatewayService, GatewayService>(); 
+            services.AddSingleton<IPeripheralService, PeripheralService>(); 
+            services.AddSingleton<IGatewayService, GatewayService>(); 
         }
 
         private static void RegisterRepositories(IServiceCollection services)
         {
-            services.AddTransient<IPeripheralRepository, PeripheralRepository>(); 
-            services.AddTransient<IGatewayRepository, GatewayRepository>(); 
+            services.AddScoped<IPeripheralRepository, PeripheralRepository>(); 
+            services.AddScoped<IGatewayRepository, GatewayRepository>(); 
         }
 
         private static void RegisterFactories(IServiceCollection services)
         {
-            services.AddTransient<IPeripheralFactory, PeripheralFactory>();
-            services.AddTransient<IGatewayFactory, GatewayFactory>();
-            services.AddTransient<IStatusCodeResultFactory, StatusCodeResultFactory>();
+            services.AddSingleton<IPeripheralFactory, PeripheralFactory>();
+            services.AddSingleton<IGatewayFactory, GatewayFactory>();
+            services.AddSingleton<IStatusCodeResultFactory, StatusCodeResultFactory>();
         }
 
         private static void RegisterDataMappers(IServiceCollection services)
         {
-            services.AddTransient<IPeripheralDataMapper, PeripheralDataMapper>();
+            services.AddSingleton<IPeripheralDataMapper, PeripheralDataMapper>();
         }
     }
 }
